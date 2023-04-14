@@ -38,12 +38,6 @@ app.run(host='0.0.0.0', port=5000)
 > **<u>For Windows users</u>, please use the following step-by-step guide: https://phoenixnap.com/kb/how-to-install-git-windows** 
 >
 > * Install **git bash** and then restart your visual studio code.
->
-> Then you can start a new GitBash to run the git commands as follows.
->
-> ![vsc-win](/Users/steliossotiriadis/Dropbox/AA-Birkbeck/A-Cloud-Workhop/Session2-Containers/images/vsc-win.png)
-
-* It might worth to revise [Lab3.2-Pushing-code-to-GitHub.md](https://github.com/steliosot/cc/blob/master/Class-3/Lab3.2-Pushing-code-to-GitHub.md)
 
 5. We will create a new Private repo in this tutorial, so make sure you follow the steps as presented in the video. The commands include:
 
