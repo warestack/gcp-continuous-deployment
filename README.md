@@ -2,19 +2,9 @@
 
 This is an example Flask application that you will use to explore the CI/CD pipeline.
 
-To run the script in your computer, you will need to install Flask:
+## Init your development environment (on local computer)
 
-`pip install flask`
-
-Then, you can run it using the following command:
-
-`python3 app.py`
-
-# How to containerise the app?
-
-#### On your local computer
-
-1. Open visual studio code and create a simple node.js application. Follow the video to create a new application that looks like this:
+Create a simple python application in your Visual Studio IDE and create a python script with the following code.
 
 ```python
 from flask import Flask
@@ -28,32 +18,43 @@ def index():
 app.run(host='0.0.0.0', port=5000)
 ```
 
-2. In this example, we used a Node js server for demonstration reasons. The script creates an express server and demonstrates how to print a simple message on the browser.
-3. Node.js is an open-source, cross-platform, back-end runtime environment that enables developers to run JavaScript code outside a web browser. It is built on the V8 JavaScript engine used in Google Chrome, and it allows developers to use JavaScript to write server-side code, as well as command-line tools and scripts.
+In this example, we create a Web Application using the Flask framework in Python. The script creates a server and
+demonstrates how to print a simple message on the browser.
 
-4. Before you continue, you must install GitHub on your local computer. Follow the following guide to download and install GitHub, then return to this tutorial.
+> Flask is a micro web framework written in Python. It is classified as a microframework because it does not require
+particular tools or libraries. It has no database abstraction layer, form validation, or any other components where
+pre-existing third-party libraries provide common functions.
+
+### Run the app
+
+To run the script in your computer, you will need to install Flask:
+
+`pip install flask`
+
+Then, you can run it using the following command:
+
+`python3 app.py`
+
+### How to containerise the app?
+
+Before you continue, you must install Git on your local computer. Follow the guide below to download and install Git,
+then return to this tutorial.
 
 * [Installation guide for Windows, Mac and Linux users](https://github.com/git-guides/install-git)
 
 > **<u>For Windows users</u>, please use the following step-by-step guide: https://phoenixnap.com/kb/how-to-install-git-windows** 
 >
-> * Install **git bash** and then restart your visual studio code.
+> Install **git bash** and then restart your Visual Studio IDE.
 
-5. We will create a new Private repo in this tutorial, so make sure you follow the steps as presented in the video. The commands include:
+Create a private repository and push it to GitHub following the commands below:
 
-* See git version.
-
-```bash
-$ git --version
-```
-
-* Initialise a git in your folder.
+1. Init an empty Git repository.
 
 ```bash
 $ git init
 ```
 
-* Add remote repo from git (this should be in one single line).
+2. Add a new remote to your repo (this should be in one single line).
 
 ```bash
 $ git remote add origin https://YOUR_GIT_USERNAME:YOUR_GIT_TOKEN@YOUR_GIT_REPO
@@ -65,33 +66,33 @@ $ git remote add origin https://YOUR_GIT_USERNAME:YOUR_GIT_TOKEN@YOUR_GIT_REPO
 $ git add . 
 ```
 
-* Commit the changes to the repo
+3. Commit the changes to the repo.
 
 ```bash
-$ git commit -m "Pushing my app files"
+$ git commit -m "Create a sample web app"
 ```
 
-* Upload the files in the repo
+4. Upload local repository content to a remote repository.
 
 ```bash
 $ git push -f origin master
 ```
 
-> At this moment, refresh your GitHub page; your files/folders should be there now!
+> At this point, refresh your GitHub page; your files/folders should be there now!
 >
-> Now go to your VM!
+> Now, go to your VM in GCP!
 
-#### On your GCP VM or in your Google shell
+#### Deploy the web application on your GCP VM
 
-6. Open a terminal connection to the GCP VM. You can connect from VSC or using the SSH button (in GCP).
-7. In the VM, make sure you are already logged in as docker-user (from Lab 5.1). 
-8. Let's clone our GitHub repo.
+1. Open a terminal connection to the GCP VM. You can connect from VSC or using the SSH button (in GCP).
+2. In the VM, make sure you are already logged in as docker-user (from Lab 5.1). 
+3. Let's clone our GitHub repo.
 
 ```bash
-$ git clone --branch master https://github.com/steliosot/flask-app
+$ git clone --branch main https://YOUR_GIT_USERNAME:YOUR_GIT_TOKEN@YOUR_GIT_REPO
 ```
 
-9. Your repo should now be in your VM; run `ls` to check it out.
+4. Your repo should now be in your VM; run `ls` to check it out.
 
 ```bash
 $ ls
@@ -99,39 +100,29 @@ $ ls
 flask-app
 ```
 
-10. Enter in the repo folder.
+5. Change the current working directory (move to the folder which contains the content of your repo).
 
 ```bash
 $ cd flask-app
 ```
 
-11. Create a new Dockerfile as follows (e.g. using `pico`)
+6. Package your python scripts into a docker image following the set of  if the Dockerfile.
 
-`sudo pico Dockerfile`
+The Dockerfile is used for specifying a set of instructions to follow in order to assemble an image.
 
-```dockerfile
-FROM ubuntu
+_**Note: before building the image review the set of instructions in the Dockerfile using a text editor (e.g. `pico`)**_
 
-RUN apt update
-RUN apt install python3-pip -y
-RUN pip3 install Flask
-
-WORKDIR /app
-
-COPY . .
-
-CMD ["python3","-m","flask","run","--host=0.0.0.0"]
+```bash
+# press ctrl+x to exit the editor
+pico Dockerfile
 ```
 
-> Save and exit (ctrl+s and then ctrl+x).
-
-12. Build the image.
-
+Build the image now!
 ```bash
 $  docker build -t flask .
 ```
 
-13. Run the container.
+13. Run the container using the newly created image abd expose it to the port 5000.
 
 ```bash
 $ docker run -d -p 5000:5000 flask
