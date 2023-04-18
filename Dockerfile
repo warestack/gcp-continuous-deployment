@@ -1,5 +1,3 @@
-# The following is a more lightweight Python image
-# FROM python:3.11-slim
 FROM ubuntu
 
 # Create app directory
@@ -12,6 +10,7 @@ RUN pip3 install Flask
 
 COPY . .
 
+# OPTIONAL as the `-p` flag is used while running the container
 EXPOSE 5000
 
 CMD ["python3", "-m", "flask", "run", "--host=0.0.0.0"]
