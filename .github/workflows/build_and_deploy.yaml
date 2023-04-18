@@ -16,7 +16,7 @@
 #
 # Author: Dimitris G. Kargatzis (dimitris@warestack.io)
 #
-name: Build, Deploy and Expose
+name: Setup, Build, Deploy and Publish
 on:
   push:
     branches:
@@ -25,8 +25,8 @@ on:
     types: [created]
 
 jobs:
-  setup-build-publish-deploy:
-    name: Setup, Build and Deploy
+  setup-build-deploy-publish:
+    name: Setup, Build, Deploy and Publish
     runs-on: ubuntu-latest
     env:
       PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
@@ -55,10 +55,16 @@ jobs:
       - id: gcloud-setup
         uses: google-github-actions/setup-gcloud@v0
 
-      # Build the Docker image
-      - name: Build and deploy to Compute engine
+      # Fetch the repo's content, build the Docker image and
+      # run a container which is exposed to a pre-defined port
+      - name: Deploy to Compute engine
         id: build
         if:
         run: |-
-          gcloud --quiet compute ssh ${{ env.INSTANCE_NAME }} --project=${{ env.PROJECT_ID }} --zone=${{ env.GCP_ZONE }} --command \
-            'git clone ${{ env.GITHUB_REPO_URL }} app-dir && cd "$_" && sudo docker image build -t ${{ env.IMAGE_NAME }}:latest . && sudo docker container run -d --name ${{ env.CONTAINER_NAME }} --publish 5000:5000 ${{ env.IMAGE_NAME }}:latest' 
+          gcloud --quiet compute ssh ${{ env.INSTANCE_NAME }} \
+          --project=${{ env.PROJECT_ID }} \
+          --zone=${{ env.GCP_ZONE }} --command \
+            'git clone ${{ env.GITHUB_REPO_URL }} working-dir \
+            && cd "$_" \
+            && sudo docker image build -t ${{ env.IMAGE_NAME }}:latest . \
+            && sudo docker container run -d -n ${{ env.CONTAINER_NAME }} -p 5000:5000 ${{ env.IMAGE_NAME }}:latest' 
