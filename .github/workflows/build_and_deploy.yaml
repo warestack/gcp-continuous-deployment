@@ -34,7 +34,7 @@ jobs:
       INSTANCE_NAME: ${{ secrets.INSTANCE_NAME }}
       IMAGE_NAME: docker-image
       CONTAINER_NAME: docker-container
-      GITHUB_REPO_URL: ${{ secrets.GITHUB_REPO_URL }}
+      GITHUB_REPO_URL: ${{ secrets.REPO_URL }}
 
     # Add "id-token" with the intended permissions.
     permissions:
