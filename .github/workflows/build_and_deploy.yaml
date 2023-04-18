@@ -46,20 +46,18 @@ jobs:
         uses: actions/checkout@v2
 
       # Config authentication to Google Cloud
-      - id: auth
+      - name: Config authentication for GCP
         uses: google-github-actions/auth@v0
         with:
           credentials_json: ${{ secrets.GCP_TF_SA_CREDS_BASE64 }}
 
       # Set up Cloud SDK
-      - id: gcloud-setup
+      - name: Set up GCP SDK
         uses: google-github-actions/setup-gcloud@v0
 
       # Fetch the repo's content, build the Docker image and
       # run a container which is exposed to a pre-defined port
       - name: Deploy to Compute engine
-        id: build
-        if:
         run: |-
           gcloud --quiet compute ssh ${{ env.INSTANCE_NAME }} \
           --project=${{ env.PROJECT_ID }} \
