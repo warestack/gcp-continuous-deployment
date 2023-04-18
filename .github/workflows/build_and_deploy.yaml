@@ -61,4 +61,4 @@ jobs:
         if:
         run: |-
           gcloud --quiet compute ssh ${{ env.INSTANCE_NAME }} --project=${{ env.PROJECT_ID }} --zone=${{ env.GCP_ZONE }} --command \
-            'git clone ${{ env.GITHUB_REPO_URL }} app-dir && cd "$_" && sudo docker image build -t ${{ env.IMAGE_NAME }}:latest . && sudo docker container run -d --name ${{ env.CONTAINER_NAME }} --publish 80:9000 ${{ env.IMAGE_NAME }}:latest' 
+            'git clone ${{ env.GITHUB_REPO_URL }} app-dir && cd "$_" && sudo docker image build -t ${{ env.IMAGE_NAME }}:latest . && sudo docker container run -d --name ${{ env.CONTAINER_NAME }} --publish 80:5000 ${{ env.IMAGE_NAME }}:latest' 
