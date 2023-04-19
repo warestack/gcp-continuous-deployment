@@ -34,6 +34,7 @@ jobs:
       INSTANCE_NAME: ${{ secrets.INSTANCE_NAME }}
       IMAGE_NAME: docker-image
       CONTAINER_NAME: docker-container
+      WORKING_DIR: app
       GITHUB_REPO_URL: ${{ secrets.REPO_URL }}
 
     # Add "id-token" with the intended permissions.
@@ -62,7 +63,9 @@ jobs:
           gcloud --quiet compute ssh ${{ env.INSTANCE_NAME }} \
           --project=${{ env.PROJECT_ID }} \
           --zone=${{ env.GCP_ZONE }} --command \
-            'git clone ${{ env.GITHUB_REPO_URL }} working-dir \
+            'sudo rm -rf /home/runner/${{ env.WORKING_DIR }} \
+            && git clone ${{ env.GITHUB_REPO_URL }} ${{ env.WORKING_DIR }} \
             && cd "$_" \
             && sudo docker image build -t ${{ env.IMAGE_NAME }}:latest . \
+            && docker stop ${{ env.CONTAINER_NAME }} || true && docker rm ${{ env.CONTAINER_NAME }} || true \
             && sudo docker container run -d --name ${{ env.CONTAINER_NAME }} -p 5000:5000 ${{ env.IMAGE_NAME }}:latest' 
